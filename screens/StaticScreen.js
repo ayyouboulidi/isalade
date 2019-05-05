@@ -12,6 +12,7 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text>{this.props.navigation.state.params.categoryName}</Text>
+                <Text>THIS PAGE IS UNDER CONSTRUCTION, PLEASE WAIT...</Text>
             </View>
         )
     }

@@ -15,27 +15,83 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <Card categoryName="Salade" navigateTo={() => this.props.navigation.navigate('OrderType', {categoryName: "Salade"})}/>
-          <Card categoryName="Sandwich" navigateTo={() => this.props.navigation.navigate('Static', {categoryName: "Sandwich"})}/>
-          <Card categoryName="Desserts" navigateTo={() => this.props.navigation.navigate('Static', {categoryName: "Desserts"})}/>
-          <Card categoryName="Boissons" navigateTo={() => this.props.navigation.navigate('Static', {categoryName: "Boissons"})}/>
-          <Card categoryName="Plats" navigateTo={() => this.props.navigation.navigate('Static', {categoryName: "Plats"})}/>
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <Card 
+            categoryName="Salade"
+            id="salade"
+            navigateTo={() => 
+              this.props.navigation.navigate('OrderType', {categoryName: "Salade" })
+            }
+          />
+          <Card 
+            categoryName="Sandwich"
+            id="sandwich"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Sandwich" })
+            }
+          />
+          <Card 
+            categoryName="Pizza"
+            id="pizza"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Pizza" })
+            }
+          />
+          <Card 
+            categoryName="Crêpes"
+            id="crepes"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Crêpes" })
+            }
+          />
+          <Card 
+            categoryName="Plats"
+            id="plats"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Plats" })
+            }
+          />
+          <Card 
+            categoryName="Plats"
+            id="plats"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Plats" })
+            }
+          />
+          <Card 
+            categoryName="Plats"
+            id="plats"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Plats" })
+            }
+          />
+          <Card 
+            categoryName="Plats"
+            id="plats"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Plats" })
+            }
+          />
+          <Card 
+            categoryName="Plats"
+            id="plats"
+            navigateTo={() => 
+              this.props.navigation.navigate('Static', { categoryName: "Plats" })
+            }
+          />
         </ScrollView>
         {
           ((((this.props || {}).navigation || {}).state || {}).params || {}).cart ?
-          <View style={{ flex: 1, paddingTop: 50 }}>
-              <View style={styles.buttonContainer}>
-                  <Button 
-                      style={styles.buttonStyle}
-                      success
-                      onPress={() => this.props.navigation.navigate('Recap', {...this.props.navigation.state.params.cart})}
-                  >
-                      <Text style={styles.text}>Passer la commande</Text>
-                  </Button>
-              </View>
-          </View>
+            <View style={styles.buttonContainer}>
+                <Button 
+                    style={styles.buttonStyle}
+                    success
+                    onPress={() => this.props.navigation.navigate('Recap', {...this.props.navigation.state.params.cart})}
+                >
+                    <Text style={styles.text}>Passer la commande</Text>
+                </Button>
+            </View>
           : null
         }
       </View>
@@ -46,23 +102,25 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   contentContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    paddingTop: 30,
-    flex: 1
+    paddingVertical: 40,
+  },
+  text: {
+    fontSize: 14,
+    color: '#fff'
   },
   buttonContainer: {
     flexDirection: 'row', 
     justifyContent: 'center',
     position: 'absolute',
     bottom: 0
-},
-buttonStyle: {
-    flex: 1,
-    borderRadius: 0,
-    justifyContent: 'center'
-},
+  },
+  buttonStyle: {
+      flex: 1,
+      borderRadius: 0,
+      justifyContent: 'center'
+  },
 });

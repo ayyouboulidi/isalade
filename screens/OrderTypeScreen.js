@@ -6,7 +6,7 @@ import { Constants, Location, Permissions } from 'expo';
 
 export default class OrderTypeScreen extends React.Component {
     static navigationOptions = {
-        title: 'Type',
+        title: 'Type de votre commande',
     };
 
     constructor(props) {
@@ -54,19 +54,19 @@ export default class OrderTypeScreen extends React.Component {
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
-                <ListItem>
+                <ListItem onPress={() => this._handlePress('deliver')}>
                     <CheckBox checked={this.state.type === 'deliver'} onPress={() => this._handlePress('deliver')}/>
                     <Body>
                         <Text>Livraison</Text>
                     </Body>
                 </ListItem>
-                <ListItem>
+                <ListItem onPress={() => this._handlePress('table')}>
                     <CheckBox checked={this.state.type === 'table'} onPress={() => this._handlePress('table')}/>
                     <Body>
                         <Text>A table</Text>
                     </Body>
                 </ListItem>
-                <ListItem>
+                <ListItem onPress={() => this._handlePress('takeAway')}>
                     <CheckBox checked={this.state.type === 'takeAway'} onPress={() => this._handlePress('takeAway')}/>
                     <Body>
                         <Text>A emporter</Text>
