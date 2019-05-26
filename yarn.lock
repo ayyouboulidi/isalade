@@ -5863,13 +5863,6 @@ react-native-branch@2.2.5:
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.2.5.tgz#4074dd63b4973e6397d9ce50e97b57c77a518e9d"
   integrity sha1-QHTdY7SXPmOX2c5Q6XtXx3pRjp0=
 
-react-native-counters@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-counters/-/react-native-counters-0.0.1.tgz#d2de448c6e1561adff4d6109f23bde6c4a72a8fa"
-  integrity sha512-k2NpCJcHatrvM259+uUD2qAhq3iFLH9onCBKcXgLUrKd+FwiRXlq6vz6Th/1lUiWjjnnYT/gLtTbnho3tJui/Q==
-  dependencies:
-    prop-types "^15.6.2"
-
 react-native-drawer@2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.5.1.tgz#08b9314184f48c724f1b467f8859797369798654"

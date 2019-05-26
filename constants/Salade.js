@@ -1,8 +1,8 @@
 const formula = [
-    { id: 'formule5', label: '5 Ingrédients & 1 Toppings', price: 29 },
-    { id: 'formule9', label: '9 Ingrédients & 2 Toppings', price: 49 },
-    { id: 'formule28', label: '28 Ingrédients & 4 Toppings', price: 79 },
-    { id: 'formule34', label: '34 Ingrédients & 5 Toppings', price: 120 }
+    { id: 'formule5', label: '5 Ingrédients & 1 Toppings', price: 29, maxIngr: 5, maxToppings: 1 },
+    { id: 'formule9', label: '9 Ingrédients & 2 Toppings', price: 49, maxIngr: 9, maxToppings: 2  },
+    { id: 'formule28', label: '28 Ingrédients & 4 Toppings', price: 79, maxIngr: 28, maxToppings: 4  },
+    { id: 'formule34', label: '34 Ingrédients & 5 Toppings', price: 120, maxIngr: 34, maxToppings: 5  }
 ];
 const bases = [
     { id: 'rice', label: 'Riz' },
@@ -33,10 +33,17 @@ const toppings = [
     { id: 'salmon', label: 'Saumon' },
 ];
 
+const sauces = [
+    { id: 'ketchup', label: 'Ketchup' },
+    { id: 'mostard', label: 'Moutarde' },
+    { id: 'mayo', label: 'Mayonnaise' }
+];
+
 export default {
     formula,
     bases,
     ingredients,
-    toppings
+    toppings,
+    sauces
 };
   

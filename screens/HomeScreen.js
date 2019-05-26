@@ -25,52 +25,10 @@ export default class HomeScreen extends React.Component {
             }
           />
           <Card 
-            categoryName="Sandwich"
-            id="sandwich"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Sandwich" })
-            }
-          />
-          <Card 
             categoryName="Pizza"
             id="pizza"
             navigateTo={() => 
               this.props.navigation.navigate('Static', { categoryName: "Pizza" })
-            }
-          />
-          <Card 
-            categoryName="Crêpes"
-            id="crepes"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Crêpes" })
-            }
-          />
-          <Card 
-            categoryName="Plats"
-            id="plats"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Plats" })
-            }
-          />
-          <Card 
-            categoryName="Plats"
-            id="plats"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Plats" })
-            }
-          />
-          <Card 
-            categoryName="Plats"
-            id="plats"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Plats" })
-            }
-          />
-          <Card 
-            categoryName="Plats"
-            id="plats"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Plats" })
             }
           />
           <Card 
@@ -87,7 +45,7 @@ export default class HomeScreen extends React.Component {
                 <Button 
                     style={styles.buttonStyle}
                     success
-                    onPress={() => this.props.navigation.navigate('Recap', {...this.props.navigation.state.params.cart})}
+                    onPress={() => this.props.navigation.navigate('Recap')}
                 >
                     <Text style={styles.text}>Passer la commande</Text>
                 </Button>
