@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, Platform, View } from 'react-native';
-import { ListItem, CheckBox, Text, Body, Button } from 'native-base';
+import { ListItem, CheckBox, Text, Body, Button, Spinner } from 'native-base';
 import { Constants, Location, Permissions } from 'expo';
+import uuid from 'uuid';
+import { getAllTypesCommand } from '../services';
 
 
 export default class OrderTypeScreen extends React.Component {
@@ -16,6 +18,8 @@ export default class OrderTypeScreen extends React.Component {
           type: null,
           location: null,
           errorMessage: null,
+          orderTypes : [],
+          loading: true
       }
     }
 
@@ -28,6 +32,15 @@ export default class OrderTypeScreen extends React.Component {
           this._getLocationAsync();
         }
     }
+
+    componentDidMount() {
+        getAllTypesCommand()
+            .then(res => res.json())
+            .then(orderTypes => {
+                this.setState({ orderTypes, loading: false });
+            })
+            .catch(e => console.error(e));
+    }    
     
     _getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -43,46 +56,56 @@ export default class OrderTypeScreen extends React.Component {
 
     _handlePress = (type) => this.setState({ type });
 
+    _handleNextPress = (type, productId, productName) => {
+        if(!!type) {
+            switch(productId) {
+                case 1:
+                    this.props.navigation.navigate('Compose', { productName, productId });
+                    break;
+                default:
+                    this.props.navigation.navigate('Static', { productName, productId });
+                    break;
+            }
+        }
+    }
+
     render() {
         let text = 'Waiting..';
+        const { productName, productId } = this.props.navigation.state.params;
+        const { type, orderTypes, errorMessage, location, loading } = this.state;
 
-        if (this.state.errorMessage) {
-            text = this.state.errorMessage;
-        } else if (this.state.location) {
-            text = `latitude: ${this.state.location.coords.latitude}, longitude: ${this.state.location.coords.longitude}`;
+        if (errorMessage) {
+            text = errorMessage;
+        } else if (location) {
+            text = `latitude: ${location.coords.latitude}, longitude: ${location.coords.longitude}`;
         }
+
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
-                <ListItem onPress={() => this._handlePress('deliver')}>
-                    <CheckBox checked={this.state.type === 'deliver'} onPress={() => this._handlePress('deliver')}/>
-                    <Body>
-                        <Text>Livraison</Text>
-                    </Body>
-                </ListItem>
-                <ListItem onPress={() => this._handlePress('table')}>
-                    <CheckBox checked={this.state.type === 'table'} onPress={() => this._handlePress('table')}/>
-                    <Body>
-                        <Text>A table</Text>
-                    </Body>
-                </ListItem>
-                <ListItem onPress={() => this._handlePress('takeAway')}>
-                    <CheckBox checked={this.state.type === 'takeAway'} onPress={() => this._handlePress('takeAway')}/>
-                    <Body>
-                        <Text>A emporter</Text>
-                    </Body>
-                </ListItem>
                 {
-                    this.state.type === 'deliver' &&
-                    <Text>{text}</Text>
-                }
+                    loading ?
+                    <Spinner />
+                    : orderTypes.map(orderType => (
+                        <ListItem key={uuid()} onPress={() => this._handlePress(orderType.id)}>
+                            <CheckBox 
+                                checked={type === orderType.id} 
+                                onPress={() => this._handlePress(orderType.id)}
+                            />
+                            <Body>
+                                <Text style={styles.label}>{orderType.name.capitalize()}</Text>
+                            </Body>
+                        </ListItem>
+                    ))
+                } 
+                { type === 1 && <Text>{text}</Text> }
                 <View style={{ flex: 1 }}>
                     <View style={styles.buttonContainer}>
                         <Button 
                             style={styles.buttonStyle}
-                            success={!!this.state.type} 
-                            disabled={!!!this.state.type} 
-                            onPress={() => !!this.state.type && this.props.navigation.navigate('Compose')}
+                            success={!!type} 
+                            disabled={!!!type} 
+                            onPress={() => this._handleNextPress(type, productId, productName)}
                         >
                             <Text>Suivant</Text>
                         </Button>
@@ -104,5 +127,8 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 0,
         justifyContent: 'center'
+    },
+    label: {
+        textTransform: 'capitalize',
     },
 });

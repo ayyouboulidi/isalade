@@ -4,6 +4,10 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { StateProvider } from './store';
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+}
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,

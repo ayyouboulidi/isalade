@@ -14,8 +14,8 @@ import RecapScreen from '../screens/RecapScreen';
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
   OrderType: OrderTypeScreen,
-  Static: StaticScreen,
   Compose: ComposeScreen,
+  Static: StaticScreen,
   Recap: RecapScreen,
 });
 

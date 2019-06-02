@@ -15,26 +15,8 @@ export default class RecapScreen extends React.Component {
     title: 'Votre commande',
   };
 
-  _getLabel(id, collection) {
-    const index = findIndex(collection, o => o.id === id);
-
-    if(index !== -1) {
-      return collection[index].label;
-    }
-    return 'n/a';
-  }
-
-  _getPrice(id) {
-    const index = findIndex(Salade.formula, o => o.id === id);
-
-    if(index !== -1) {
-      return Salade.formula[index].price;
-    }
-    return 'n/a';
-  }
-
   _getTotalPrice(cart = []) {
-    const reducer = (accumulator, currentValue) => accumulator + this._getPrice(currentValue.type.id);
+    const reducer = (accumulator, currentValue) => accumulator + currentValue.product.price;
 
     return cart.reduce(reducer, 0);
   }
@@ -47,27 +29,33 @@ export default class RecapScreen extends React.Component {
             <ScrollView>
             {
               value.state.cart.map((item, index) => {
-                const { type, bases, ingredients, toppings, sauces, quantity } = item;
+                const { product, order, quantity, componentsList } = item;
                   return (
-                    <React.Fragment key={`${type.id}_${index}`}>
+                    <React.Fragment key={`${product.id}_${index}`}>
                       <ListItem itemDivider>
-                        <Text>{quantity} Salade (<Text style={styles.priceText}>{this._getPrice(type.id)} Dh</Text>)</Text>
+                        <Text>{quantity} {product.name} (<Text style={styles.priceText}>{product.price} Dh</Text>)</Text>
                       </ListItem>
                       <ListItem>
-                        <Text>Formule : {this._getLabel(type.id, Salade.formula)}</Text>
+                        <Text>Formule : {product.description}</Text>
                       </ListItem>
-                      <ListItem>
-                        <Text>Bases : { bases.map(base => this._getLabel(base, Salade.bases)).join(', ')}</Text>
-                      </ListItem>
-                      <ListItem>
-                        <Text>Ingrédients: {ingredients.map(ingr => this._getLabel(ingr.id, Salade.ingredients)).join(', ')}</Text>
-                      </ListItem>
-                      <ListItem>
-                        <Text>Toppings: {toppings.map(topp => this._getLabel(topp.id, Salade.toppings)).join(', ')}</Text>
-                      </ListItem>
-                      <ListItem>
-                        <Text>Sauces: {sauces.map(sauce => this._getLabel(sauce, Salade.sauces)).join(', ')}</Text>
-                      </ListItem>
+                      {
+                        componentsList.map(category => (
+                          <ListItem key={`categories_${category.id}`}>
+                            <Text>
+                              {
+                                `${category.label.capitalize()} : ${order[category.id]
+                                  .map(cat => {
+                                    if(cat.quantity > 1) {
+                                      return `${cat.name.capitalize()} (x ${cat.quantity})`
+                                    } 
+                                    return cat.name.capitalize()
+                                  }).join(', ')
+                                }`
+                              }
+                            </Text>
+                          </ListItem>
+                        ))
+                      }
                     </React.Fragment>
                   )
                 })

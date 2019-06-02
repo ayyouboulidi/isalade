@@ -5,40 +5,56 @@ import {
   View,
   Text
 } from 'react-native';
-import { Button } from 'native-base';
+import { Button, Spinner } from 'native-base';
 import Card from '../components/Card';
+import { getAllProductsTypes } from '../services';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
+  state = {
+    products : [],
+    loading: true,
+  }
+
+  componentDidMount() {
+    getAllProductsTypes()
+      .then(res => res.json())
+      .then(products => {
+        this.setState({ products, loading: false });
+      })
+      .catch(e => console.error(e));
+  }
+
   render() {
     return (
       <View style={{ flex: 1, flexDirection: 'column' }}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <Card 
-            categoryName="Salade"
-            id="salade"
-            navigateTo={() => 
-              this.props.navigation.navigate('OrderType', {categoryName: "Salade" })
+        {
+          this.state.loading
+          ? <Spinner />
+          : <ScrollView contentContainerStyle={styles.contentContainer}>
+            {
+              this.state.products.map(product => (
+                <Card 
+                  key={product.id}
+                  id={product.id}
+                  theme='products_types'
+                  productName={product.name}
+                  productDescription={product.description}
+                  productImage={product.img_path}
+                  navigateTo={() => {
+                    this.props.navigation.navigate('OrderType', { 
+                      productName:  product.name,
+                      productId:  product.id 
+                    })
+                  }}
+                />
+              ))
             }
-          />
-          <Card 
-            categoryName="Pizza"
-            id="pizza"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Pizza" })
-            }
-          />
-          <Card 
-            categoryName="Plats"
-            id="plats"
-            navigateTo={() => 
-              this.props.navigation.navigate('Static', { categoryName: "Plats" })
-            }
-          />
-        </ScrollView>
+          </ScrollView>
+        }
         {
           ((((this.props || {}).navigation || {}).state || {}).params || {}).cart ?
             <View style={styles.buttonContainer}>
@@ -61,6 +77,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  label: {
+    textTransform: 'capitalize',
+},
   contentContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
