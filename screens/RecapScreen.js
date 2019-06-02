@@ -1,5 +1,4 @@
 import React from 'react';
-import { findIndex } from 'lodash';
 import {
   ScrollView,
   StyleSheet,
@@ -7,7 +6,6 @@ import {
   Text
 } from 'react-native';
 import { ListItem, Button } from 'native-base';
-import Salade from '../constants/Salade';
 import { StateContext } from '../store';
 
 export default class RecapScreen extends React.Component {
@@ -29,7 +27,7 @@ export default class RecapScreen extends React.Component {
             <ScrollView>
             {
               value.state.cart.map((item, index) => {
-                const { product, order, quantity, componentsList } = item;
+                const { product, order, quantity = 1, componentsList = [] } = item;
                   return (
                     <React.Fragment key={`${product.id}_${index}`}>
                       <ListItem itemDivider>
@@ -76,13 +74,14 @@ export default class RecapScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   buttonContainer: {
     flexDirection: 'row', 
     justifyContent: 'center',
     position: 'absolute',
-    bottom: 0
+    bottom: 0,
+    paddingTop: 50
   },
   priceText: {
     color: 'green',

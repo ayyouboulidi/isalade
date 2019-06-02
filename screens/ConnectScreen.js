@@ -24,7 +24,7 @@ export default class FixedLabelExample extends Component {
   // web service here to auth the user
   connect = () => {
     const { login, password } = this.state;
-    if(login === 'i@i.com' && password === 'a') {
+    if(login === 'a@a.com' && password === 'a') {
       this.props.navigation.navigate('Home');
     }
     else {
