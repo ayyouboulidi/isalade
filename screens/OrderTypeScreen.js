@@ -56,22 +56,8 @@ export default class OrderTypeScreen extends React.Component {
 
     _handlePress = (type) => this.setState({ type });
 
-    _handleNextPress = (type, productId, productName) => {
-        if(!!type) {
-            switch(productId) {
-                case 1:
-                    this.props.navigation.navigate('Compose', { productName, productId });
-                    break;
-                default:
-                    this.props.navigation.navigate('Static', { productName, productId });
-                    break;
-            }
-        }
-    }
-
     render() {
         let text = 'Waiting..';
-        const { productName, productId } = this.props.navigation.state.params;
         const { type, orderTypes, errorMessage, location, loading } = this.state;
 
         if (errorMessage) {
@@ -79,7 +65,6 @@ export default class OrderTypeScreen extends React.Component {
         } else if (location) {
             text = `latitude: ${location.coords.latitude}, longitude: ${location.coords.longitude}`;
         }
-
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -105,7 +90,7 @@ export default class OrderTypeScreen extends React.Component {
                             style={styles.buttonStyle}
                             success={!!type} 
                             disabled={!!!type} 
-                            onPress={() => this._handleNextPress(type, productId, productName)}
+                            onPress={() => this.props.navigation.navigate('Recap', { orderTypeId: type })}
                         >
                             <Text>Suivant</Text>
                         </Button>

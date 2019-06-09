@@ -45,10 +45,17 @@ export default class HomeScreen extends React.Component {
                   productDescription={product.description}
                   productImage={product.img_path}
                   navigateTo={() => {
-                    this.props.navigation.navigate('OrderType', { 
-                      productName:  product.name,
-                      productId:  product.id 
-                    })
+                    if(product.id === 1) {
+                      this.props.navigation.navigate('Compose', { 
+                        productName:  product.name,
+                        productId:  product.id 
+                      });
+                    } else {
+                      this.props.navigation.navigate('Static', { 
+                        productName:  product.name,
+                        productId:  product.id 
+                      });
+                    }
                   }}
                 />
               ))
@@ -61,7 +68,7 @@ export default class HomeScreen extends React.Component {
                 <Button 
                     style={styles.buttonStyle}
                     success
-                    onPress={() => this.props.navigation.navigate('Recap')}
+                    onPress={() => this.props.navigation.navigate('OrderType')}
                 >
                     <Text style={styles.text}>Passer la commande</Text>
                 </Button>

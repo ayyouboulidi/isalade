@@ -146,3 +146,23 @@ export function getListFeddBack() {
 export function SendCnxFacebook() {
     return fetch('https://isaladeapi.herokuapp.com/compte/createByFacebook');
 }
+
+/* connexion avec google  kaydir test wach deja kayan sinn kaydir lik creation dyal compte wfl7alat bjouj kay dir return l objet dyalk fih name,img_path,token*/
+export function SendCnxGoogle() {
+    return fetch('https://isaladeapi.herokuapp.com/compte/createByGoogle');
+}
+
+
+/**
+ * 
+ * @param {object} order 
+ */
+export function SendCommand(order) {
+    return fetch('https://isaladeapi.herokuapp.com/command/Send', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(order)
+    });
+}

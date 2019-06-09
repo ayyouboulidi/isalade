@@ -3,10 +3,18 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Text
+  Text,
+  Alert
 } from 'react-native';
 import { ListItem, Button } from 'native-base';
 import { StateContext } from '../store';
+import { SendCommand } from '../services';
+
+function fomratDate() {
+  let d = new Date();
+  d = new Date(d.getTime() - 3000000);
+  return d.getFullYear().toString()+"-"+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+"-"+(d.getDate().toString().length==2?d.getDate().toString():"0"+d.getDate().toString())+" "+(d.getHours().toString().length==2?d.getHours().toString():"0"+d.getHours().toString())+":"+((parseInt(d.getMinutes()/5)*5).toString().length==2?(parseInt(d.getMinutes()/5)*5).toString():"0"+(parseInt(d.getMinutes()/5)*5).toString())+":00";
+}
 
 export default class RecapScreen extends React.Component {
   static navigationOptions = {
@@ -14,9 +22,56 @@ export default class RecapScreen extends React.Component {
   };
 
   _getTotalPrice(cart = []) {
-    const reducer = (accumulator, currentValue) => accumulator + currentValue.product.price;
+    const defaultQuantity = 1;
+    const reducer = (accumulator, currentValue) => accumulator + ( currentValue.quantity || defaultQuantity) * currentValue.product.price;
 
     return cart.reduce(reducer, 0);
+  }
+
+  _validateOrder = (cart = []) => {
+    const orders = cart.map(item => {
+      const { product, order = {}, quantity = 1 } = item;
+      const orderList = {
+        productTypeId: product.product_type_id,
+        productId: product.id,
+        quantity,
+        ...order
+      };
+
+      return orderList;
+    });
+
+    SendCommand({
+      userToken: "bmRSZTV4YTNUdGhoNkNoUG9Fb1Fjc0pPZ1MzU0xQNWwweWR1Q1RPQg==",
+      retreiveDate: fomratDate(),
+      orderTypeId: this.props.navigation.state.params.orderTypeId,
+      orders: orders
+    })
+    .then(result => {
+      if(result.status === 200) {
+        this.props.navigation.navigate('Home');
+      } else {
+        Alert.alert(
+          'Error',
+          'please retry or contact the administrator',
+          [
+            {text: 'OK', onPress: () => {}},
+          ],
+          {cancelable: false},
+        );
+      }
+    })
+    .catch(e => {
+      console.error(e);
+      Alert.alert(
+        'Error',
+        'please retry or contact the administrator',
+        [
+          {text: 'OK', onPress: () => {}},
+        ],
+        {cancelable: false},
+      );
+    });
   }
 
   render() {
@@ -60,7 +115,7 @@ export default class RecapScreen extends React.Component {
               }
             </ScrollView>
             <View style={styles.buttonContainer}>
-              <Button style={styles.buttonStyle} success onPress={() => {}}>
+              <Button style={styles.buttonStyle} success onPress={() => this._validateOrder(value.state.cart)}>
                   <Text style={styles.text}>Valider la commande ({this._getTotalPrice(value.state.cart)} DH)</Text>
               </Button>
             </View>
