@@ -191,6 +191,10 @@ export async function SendCnxFacebook(data) {
  */
 export async function SendCommand(order) {
     const token = await _getApiTokenFormStorage();
+    console.log(JSON.stringify({
+        userToken: token,
+        ...order
+    }))
     return fetch('https://isaladeapi.herokuapp.com/command/Send', {
         method: 'POST',
         headers: {

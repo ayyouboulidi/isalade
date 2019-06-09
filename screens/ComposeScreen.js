@@ -87,11 +87,11 @@ export default class ComposeScreen extends React.Component {
                     } 
                 });
             } else {
-                orderByComponent.push({ ...component, quantity });
+                orderByComponent.push({ id: component.id, quantity, name: component.name });
                 this._addComponent(maxKey, maxCount, componentTypeId, orderByComponent);
             }
         } else {
-            this._addComponent(maxKey, maxCount, componentTypeId, [{ ...component, quantity }]);
+            this._addComponent(maxKey, maxCount, componentTypeId, [{ id: component.id, quantity, name: component.name }]);
         }
     }
 
