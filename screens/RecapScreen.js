@@ -42,7 +42,6 @@ export default class RecapScreen extends React.Component {
     });
 
     SendCommand({
-      userToken: "bmRSZTV4YTNUdGhoNkNoUG9Fb1Fjc0pPZ1MzU0xQNWwweWR1Q1RPQg==",
       retreiveDate: fomratDate(),
       orderTypeId: this.props.navigation.state.params.orderTypeId,
       orders: orders

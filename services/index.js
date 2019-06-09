@@ -1,3 +1,15 @@
+import { AsyncStorage } from 'react-native';
+
+async function _getApiTokenFormStorage() {
+    let value;
+    try {
+        value = await AsyncStorage.getItem('apiTokenId_v1');
+    } catch (error) {
+    // Error retrieving data
+    }
+
+    return value;
+}
 /**
  * API Sample
  * [
@@ -15,7 +27,8 @@
         }
     ]
  */
-export function getAllProductsTypes() {
+export async function getAllProductsTypes() {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/products/types');
 }
 
@@ -53,7 +66,8 @@ export function getAllProductsTypes() {
     ]
  * @param {string} id 
  */
-export function getListProducts(id) {
+export async function getListProducts(id) {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/products/liste/' + id);
 }
 
@@ -85,7 +99,8 @@ export function getListProducts(id) {
         }
     ]
  */
-export function getAllComponentsTypes() {
+export async function getAllComponentsTypes() {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/components/types');
 }
 
@@ -104,7 +119,8 @@ export function getAllComponentsTypes() {
  * 
  * @param {string} id 
  */
-export function getListComponents(id) {
+export async function getListComponents(id) {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/components/liste/' + id);
 }
 
@@ -128,41 +144,106 @@ export function getListComponents(id) {
         }
     ]
  */
-export function getAllTypesCommand() {
+export async function getAllTypesCommand() {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/command/types/');
 }
 
 /* hadi bach katsifet un feed back  */
-export function SendFeddBack() {
+export async function SendFeddBack() {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/feedback/Send');
 }
 
 /* hadi bach katjbed ga3 les feedback  */
-export function getListFeddBack() {
+export async function getListFeddBack() {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/feedback/All');
 }
 
-/* connexion avec facebook  kaydir test wach deja kayan sinn kaydir lik creation dyal compte wfl7alat bjouj kay dir return l objet dyalk fih name,img_path,token*/
-export function SendCnxFacebook() {
-    return fetch('https://isaladeapi.herokuapp.com/compte/createByFacebook');
-}
 
 /* connexion avec google  kaydir test wach deja kayan sinn kaydir lik creation dyal compte wfl7alat bjouj kay dir return l objet dyalk fih name,img_path,token*/
-export function SendCnxGoogle() {
+export async function SendCnxGoogle() {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/compte/createByGoogle');
 }
 
+/**
+ * facebook connect
+ * 
+ * @param {object} data
+ */
+export async function SendCnxFacebook(data) {
+    const token = await _getApiTokenFormStorage();
+    return fetch('https://isaladeapi.herokuapp.com/compte/createByFacebook', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(data)
+    });
+}
 
 /**
  * 
  * @param {object} order 
  */
-export function SendCommand(order) {
+export async function SendCommand(order) {
+    const token = await _getApiTokenFormStorage();
     return fetch('https://isaladeapi.herokuapp.com/command/Send', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(order)
+        body: JSON.stringify({
+            userToken: token,
+            ...order
+        })
     });
+}
+
+export async function SendCnxEmail(email, password) {
+    const token = await _getApiTokenFormStorage();
+    return fetch('https://isaladeapi.herokuapp.com/compte/verificationauth', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            email,
+            password
+        })
+    })
+}
+
+export async function getUserProfile() {
+    const token = await _getApiTokenFormStorage();
+
+    return fetch('https://isaladeapi.herokuapp.com/compte/getinfobytoken', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            apitoken: token,
+        })
+    })
+}
+
+export async function getHistory() {
+    const token = await _getApiTokenFormStorage();
+
+    return fetch('https://isaladeapi.herokuapp.com/command/Get', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            apitoken: token,
+        })
+    })
 }

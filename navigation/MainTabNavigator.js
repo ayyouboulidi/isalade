@@ -4,8 +4,8 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import HistoryScreen from '../screens/HistoryScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import OrderTypeScreen from '../screens/OrderTypeScreen';
 import StaticScreen from '../screens/StaticScreen';
 import ComposeScreen from '../screens/ComposeScreen';
@@ -33,11 +33,11 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const HistoryStack = createStackNavigator({
+  History: HistoryScreen,
 });
 
-LinksStack.navigationOptions = {
+HistoryStack.navigationOptions = {
   tabBarLabel: 'Historique',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -47,11 +47,11 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
 });
 
-SettingsStack.navigationOptions = {
+ProfileStack.navigationOptions = {
   tabBarLabel: 'Profil',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -63,6 +63,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  HistoryStack,
+  ProfileStack,
 });
