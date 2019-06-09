@@ -23,6 +23,11 @@ const reducer = (state, action) => {
                 ...state,
                 cart: newCart
             };
+        case 'RESET_CART':
+            return {
+                ...state,
+                cart: []
+            };
         default:
         return state;
     }

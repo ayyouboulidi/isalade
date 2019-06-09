@@ -28,7 +28,7 @@ export default class RecapScreen extends React.Component {
     return cart.reduce(reducer, 0);
   }
 
-  _validateOrder = (cart = []) => {
+  _validateOrder = (cart = [], value) => {
     const orders = cart.map(item => {
       const { product, order = {}, quantity = 1 } = item;
       const orderList = {
@@ -48,7 +48,8 @@ export default class RecapScreen extends React.Component {
     })
     .then(result => {
       if(result.status === 200) {
-        this.props.navigation.navigate('Home');
+        value.dispatch({ type: 'RESET_CART' });
+        this.props.navigation.navigate('Home', { cart: false });
       } else {
         Alert.alert(
           'Error',
@@ -114,7 +115,7 @@ export default class RecapScreen extends React.Component {
               }
             </ScrollView>
             <View style={styles.buttonContainer}>
-              <Button style={styles.buttonStyle} success onPress={() => this._validateOrder(value.state.cart)}>
+              <Button style={styles.buttonStyle} success onPress={() => this._validateOrder(value.state.cart, value)}>
                   <Text style={styles.text}>Valider la commande ({this._getTotalPrice(value.state.cart)} DH)</Text>
               </Button>
             </View>
