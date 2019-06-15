@@ -43,7 +43,7 @@ export default class FixedLabelExample extends Component {
         // Get the user's name using Facebook's Graph API
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture`);
         const jsonResponse = await response.json();
-        console.log(response)
+        console.log(jsonResponse)
         const { name, picture, email } = jsonResponse;
 
         try{
@@ -54,13 +54,16 @@ export default class FixedLabelExample extends Component {
           Alert.alert('Success !', `Hello ${name}!`);
         } catch (e) {
           this.setState({ loading: false });
-          Alert.alert(`Facebook Login Error: ${message}`);
+          console.log(e)
+          Alert.alert(`Facebook Login Error: ${JSON.stringify(e)}`);
         }
       } else {
+        console.log(type)
         // type === 'cancel'
         this.setState({ loading: false });
       }
     } catch ({ message }) {
+      console.log(e)
       this.setState({ loading: false });
       Alert.alert(`Facebook Login Error: ${message}`);
     }
