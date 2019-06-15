@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Facebook } from 'expo';
 import { StyleSheet, View, Text, Alert, AsyncStorage } from 'react-native';
-import { Content, Form, Item, Input, Icon, Button } from 'native-base';
+import { Content, Form, Item, Input, Icon, Button, Spinner } from 'native-base';
 import { config } from '../constants/config';
 import { SendCnxFacebook, SendCnxEmail } from '../services';
 
@@ -26,6 +26,8 @@ export default class FixedLabelExample extends Component {
 
   // web service here to auth the user
   connectWithFacebook = async () => {
+    this.setState({ loading: true });
+
     try {
       const {
         type,
@@ -48,28 +50,32 @@ export default class FixedLabelExample extends Component {
         Alert.alert('Success !', `Hello ${name}!`);
       } else {
         // type === 'cancel'
+        this.setState({ loading: false });
       }
     } catch ({ message }) {
+      this.setState({ loading: false });
       Alert.alert(`Facebook Login Error: ${message}`);
     }
   }
 
   connectWithEmail = async () => {
     const { login, password } = this.state;
-    console.log(login, password)
+
+    this.setState({ loading: true });
     SendCnxEmail(login, password)
     .then(res => res.json())
     .then(async result => {
       if(result.status === 'fail') {
-        this.setState({ error: 'Login/Password is incorrect'});
+        console.log(result)
+        this.setState({ error: 'Login/Password is incorrect', loading: false});
       } else if(result.status === 'success') {
         await AsyncStorage.setItem('apiTokenId_v1', result.compte.apitoken);
         this.props.navigation.navigate('Home');
       }
     })
     .catch(e => {
-      console.log(e)
-      this.setState({ error: 'Login/Password is incorrect'});
+      console.log(e);
+      this.setState({ error: 'Login/Password is incorrect', loading: false});
     });
   }
 
@@ -84,6 +90,7 @@ export default class FixedLabelExample extends Component {
               <Input 
                 placeholder="Login..." 
                 autoCapitalize='none'
+                value={this.state.login}
                 onChangeText={(term) => this.handleChange(term, 'login')}
               />
             </Item>
@@ -92,6 +99,7 @@ export default class FixedLabelExample extends Component {
               <Input 
                 placeholder="Password..."
                 autoCapitalize='none'
+                value={this.state.password}
                 onChangeText={(term) => this.handleChange(term, 'password')}
                 secureTextEntry
               />
@@ -106,7 +114,11 @@ export default class FixedLabelExample extends Component {
                     danger={error ? true : false}
                     onPress={this.connectWithEmail}
                 >
-                    <Text style={styles.text}>Se connecter</Text>
+                    {
+                      this.state.loading ?
+                      <Spinner />
+                      : <Text style={styles.text}>Se connecter</Text>
+                    }
                 </Button>
             </View>
             {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -118,7 +130,11 @@ export default class FixedLabelExample extends Component {
                     success={true}
                     onPress={this.connectWithFacebook}
                 >
-                    <Text style={styles.text}>Se connecter avec facebook</Text>
+                    {
+                      this.state.loading ?
+                      <Spinner />
+                      : <Text style={styles.text}>Se connecter avec facebook</Text>
+                    }
                 </Button>
             </View>
             {<Text style={styles.error}>en cours</Text>}

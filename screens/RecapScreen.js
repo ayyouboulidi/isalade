@@ -46,8 +46,23 @@ export default class RecapScreen extends React.Component {
       orderTypeId: this.props.navigation.state.params.orderTypeId,
       orders: orders
     })
+    .then(res => {
+      if(res.status === 200) {
+        return res.json();
+      } else {
+        return false
+      }
+    })
     .then(result => {
-      if(result.status === 200) {
+      if(result !== false) {
+        Alert.alert(
+          `Commande ${result.commandnum}`,
+          `Merci de votre commande. Veuillez garder le numéro pour pouvoir récuperer votre commande.`,
+          [
+            {text: 'OK', onPress: () => {}},
+          ],
+          {cancelable: false},
+        );
         value.dispatch({ type: 'RESET_CART' });
         this.props.navigation.navigate('Home', { cart: false });
       } else {

@@ -32,12 +32,13 @@ export default class LinksScreen extends React.Component {
     getHistory()
       .then(res => res.json())
       .then(result => {
-        this.setState({listOrders: result})
+        this.setState({ listOrders: result })
       })
       .catch(e => console.error(e));
   }
 
   render() {
+
     return (
       <ScrollView styles={styles.container}>
         <Container>
