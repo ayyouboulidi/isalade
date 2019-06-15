@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Facebook } from 'expo';
+import * as Facebook from 'expo-facebook'
 import { StyleSheet, View, Text, Alert, AsyncStorage } from 'react-native';
 import { Content, Form, Item, Input, Icon, Button, Spinner } from 'native-base';
 import { config } from '../constants/config';
@@ -41,13 +41,21 @@ export default class FixedLabelExample extends Component {
       });
       if (type === 'success') {
         // Get the user's name using Facebook's Graph API
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture`);
         const jsonResponse = await response.json();
+        console.log(response)
         const { name, picture, email } = jsonResponse;
 
-        await SendCnxFacebook({ name, picture, email });
-        this.props.navigation.navigate('Home');
-        Alert.alert('Success !', `Hello ${name}!`);
+        try{
+          const facebookConnexion = await SendCnxFacebook({ name, picture, email });
+          const jsonConnexionResponse = await facebookConnexion.json();
+          await AsyncStorage.setItem('apiTokenId_v1', jsonConnexionResponse.token);
+          this.props.navigation.navigate('Home');
+          Alert.alert('Success !', `Hello ${name}!`);
+        } catch (e) {
+          this.setState({ loading: false });
+          Alert.alert(`Facebook Login Error: ${message}`);
+        }
       } else {
         // type === 'cancel'
         this.setState({ loading: false });
