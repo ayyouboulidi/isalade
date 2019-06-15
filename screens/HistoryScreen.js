@@ -51,11 +51,11 @@ export default class LinksScreen extends React.Component {
                       <Thumbnail source={{ uri: 'https://www.festool.fr/-/media/tts/festool/festool/bilder/wissen/festool-apps/order-app/hero_image_text_400x200px_orderapp_iconshopping.jpg' }} />
                     </Left>
                     <Body>
-                      <Text>{order.name}</Text>
+                      <Text>{order.name} ({order.price} Dh)</Text>
                       <Text note>{order.created_at}</Text>
                     </Body>
                     <Right>
-                      <Text note>{order.price}</Text>
+                      <Text note>#{order.id_command}</Text>
                     </Right>
                   </ListItem>
                 ))

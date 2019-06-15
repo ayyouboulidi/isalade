@@ -14,8 +14,8 @@ export default class FixedLabelExample extends Component {
     super(props);
 
     this.state = {
-      login: '',
-      password: '',
+      login: 'restaurantisalade@gmail.com',
+      password: 'Admin',
       error: null
     }
   }
