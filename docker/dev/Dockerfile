@@ -2,7 +2,9 @@ FROM node
 
 LABEL ayyouboulidi <ayyouboulidiomali@gmail.com>
 
-RUN npm install -g yarn exp expo-cli
+RUN npm install -g yarn expo
+
+RUN yarn global add expo-cli
 
 RUN mkdir -p /app/isalade
 
